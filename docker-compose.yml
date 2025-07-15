@@ -1,0 +1,135 @@
+services:
+  # FastAPI 백엔드 서비스
+  fastapi:
+    build: 
+      context: ./fastapi_base
+      dockerfile: Dockerfile
+    container_name: ai_ad_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./fastapi_base:/app
+      - ai_models:/app/static/models
+      - ai_cache:/root/.cache
+      - shared_images:/app/static/output
+    environment:
+      - PYTHONPATH=/app
+      - CUDA_VISIBLE_DEVICES=0
+      - TOKENIZERS_PARALLELISM=false
+      - TRANSFORMERS_CACHE=/root/.cache/transformers
+      - HF_HOME=/root/.cache/huggingface
+      - NVIDIA_VISIBLE_DEVICES=all
+
+    env_file:
+      - ./fastapi_base/.env
+    networks:
+      - ai_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+    # GPU 사용 시 (NVIDIA Docker 필요)
+    runtime: nvidia
+
+  # Streamlit 프론트엔드 서비스  
+  streamlit:
+    build:
+      context: ./streamlit_base
+      dockerfile: Dockerfile
+    container_name: ai_ad_streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit_base:/app
+      - shared_images:/app/static/images/output
+    environment:
+      - FASTAPI_BASE_URL=http://fastapi:8000
+      - STREAMLIT_SERVER_FILE_WATCHER_TYPE=poll
+      - STREAMLIT_SERVER_RUN_ON_SAVE=true
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    depends_on:
+      - fastapi
+    networks:
+      - ai_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  # Redis (캐싱용 - 선택사항)
+  redis:
+    image: redis:7-alpine
+    container_name: ai_ad_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ai_network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Nginx (리버스 프록시 - 프로덕션용)
+  nginx:
+    image: nginx:alpine
+    container_name: ai_ad_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - fastapi
+      - streamlit
+    networks:
+      - ai_network
+    restart: unless-stopped
+    profiles:
+      - production
+
+# 네트워크 설정
+networks:
+  ai_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# 볼륨 설정
+volumes:
+  # AI 모델 저장소 (큰 용량)
+  ai_models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/models
+  
+  # 캐시 저장소
+  ai_cache:
+    driver: local
+    driver_opts:
+      type: none  
+      o: bind
+      device: ./data/cache
+  
+  # 공유 이미지 저장소
+  shared_images:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/images
+  
+  # Redis 데이터
+  redis_data:
+    driver: local

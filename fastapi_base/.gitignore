@@ -1,0 +1,12 @@
+**/__pycache__/
+**/*.py[cod]
+**.env
+.vscode/
+.idea/
+.DS_Store
+**/*.log
+**/.ipynb_checkpoints/
+**/*.pt
+**/*.pth
+**/*.ckpt
+**/*.sqlite3

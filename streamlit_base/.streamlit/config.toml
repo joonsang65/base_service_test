@@ -1,0 +1,21 @@
+[global]
+developmentMode = false
+
+[server]
+port = 8501
+address = "0.0.0.0"
+headless = true
+fileWatcherType = "poll"
+runOnSave = true
+maxUploadSize = 10
+
+[browser]
+gatherUsageStats = false
+serverAddress = "0.0.0.0"
+
+[theme]
+primaryColor = "#4A8CF1"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#262730"
+font = "sans serif"

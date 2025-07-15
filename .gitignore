@@ -1,0 +1,201 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Logs
+*.log
+logs/
+*.out
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.env
+
+# Database
+*.db
+*.sqlite3
+
+# Cache
+.cache/
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# AI Models & Data
+data/
+models/
+*.safetensors
+*.bin
+*.onnx
+*.tflite
+
+# Large Files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Static Files (generated)
+static/output/
+static/temp/
+static/cache/
+static/models/*.safetensors
+static/models/*.bin
+
+# Images (except examples)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.webp
+!static/images/examples/*.png
+!static/images/examples/*.jpg
+!static/images/gallery/.gitkeep
+
+# Fonts (large files)
+*.ttf
+*.otf
+*.woff
+*.woff2
+!static/fonts/.gitkeep
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# API Keys & Secrets
+secrets/
+credentials/
+keys/
+certs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Backup files
+backup/
+*.backup
+*.bak
+
+# Performance files
+.prof
+
+# Local development
+local/
+dev/
+test_files/
+experiments/
+
+# Monitoring
+grafana/
+prometheus/
+
+# SSL Certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+
+# Documentation builds
+docs/_build/
+site/
+
+# Translation files
+*.mo
+*.pot
+
+# Misc
+.sass-cache/
+connect.lock
+coverage.xml
+*.cover
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+cover/
