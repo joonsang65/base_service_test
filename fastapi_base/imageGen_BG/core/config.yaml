@@ -1,6 +1,6 @@
 openai:
+<<<<<<< HEAD
   api_key_env: OPENAI_API_KEY
-  gpt_model: gpt-4.1-mini
 
 sd_pipeline:
   inpaint:
