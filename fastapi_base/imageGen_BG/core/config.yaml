@@ -1,5 +1,4 @@
 openai:
-<<<<<<< HEAD
   api_key_env: OPENAI_API_KEY
 
 sd_pipeline:
