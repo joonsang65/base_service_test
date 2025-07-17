@@ -63,7 +63,7 @@ class ImageProcessor:
             raise
     
     def encode_to_base64(self, image: Image.Image, size: Optional[Tuple[int, int]] = None) -> str:
-        """이미지를 base64로 인코딩 (model_dev/modules/utils.py의 encode_image 로직)"""
+        """이미지를 base64로 인코딩"""
         try:
             if not isinstance(image, Image.Image):
                 raise TypeError(f"Unsupported image type: {type(image)}")
@@ -75,11 +75,20 @@ class ImageProcessor:
             
             buffered = io.BytesIO()
             image.save(buffered, format="PNG")
-            return base64.b64encode(buffered.getvalue()).decode("utf-8")
+            
+            # 🔍 버퍼 저장 이후에 검사
+            data = buffered.getvalue()
+            if not data:
+                logger.error("버퍼가 비어 있음: 이미지 저장 실패")
+                raise ValueError("이미지를 버퍼에 저장하지 못했습니다.")
+            else: 
+                print(f"버퍼 데이터 있음 : {data[:100]}")
+            return base64.b64encode(data).decode("utf-8")
 
         except Exception as e:
             logger.error(f"Failed to encode image: {e}")
             raise
+
 
 async def validate_image(upload_file: UploadFile) -> Image.Image:
     """업로드된 파일을 검증하고 PIL Image로 변환"""

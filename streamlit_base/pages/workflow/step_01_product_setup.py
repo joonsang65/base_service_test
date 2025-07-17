@@ -13,16 +13,18 @@ from components.ui.navigation import render_step_navigation
 
 def render():
     """1단계 메인 렌더링 함수"""
-    st.markdown(WORKFLOW_CSS, unsafe_allow_html=True)
+    st.markdown(f"<style>{WORKFLOW_CSS}</style>", unsafe_allow_html=True)
     
     api_client = get_api_client()
     
     # 헤더
     st.markdown("""
+    <style>
     <div class="step-header">
         <h2>1️⃣ 제품 이미지 설정 및 배치</h2>
         <p>제품 이미지를 업로드하고 위치를 조정해주세요</p>
     </div>
+    </style>
     """, unsafe_allow_html=True)
     
     # 메인 컨텐츠

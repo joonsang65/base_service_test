@@ -16,9 +16,9 @@ app.add_middleware(
 )
 
 # 라우터 등록
-app.include_router(textGen.router, prefix="/textgen", tags=["textGen"])
-app.include_router(imageGen_Text_router.router, prefix="/imgen_text", tags=["imgGen_Text"])
-app.include_router(imageGen_BG_router.router, prefix="/imgen_bg", tags=["imgGen_Backround"])
+app.include_router(textGen.router, prefix="/api/v1/text", tags=["textGen"])
+app.include_router(imageGen_Text_router.router, prefix="/api/v1/image/text", tags=["imgGen_Text"])
+app.include_router(imageGen_BG_router.router, prefix="/api/v1/image/bg", tags=["imgGen_Backround"])
 
 @app.get("/")
 async def root():

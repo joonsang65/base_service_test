@@ -39,10 +39,10 @@ class Settings(BaseSettings):
     }
     
     # 환경 변수 파일 경로
-    DEFAULT_ENV_PATH: str = "./junsang.env"
+    DEFAULT_ENV_PATH: str = "..env"
     
     class Config:
-        env_file = "./junsang.env"
+        env_file = "..env"
         case_sensitive = True
         extra = "ignore"  # ✅ 추가: 정의되지 않은 필드 무시
 

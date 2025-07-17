@@ -13,7 +13,7 @@ from ..service.background_service import BackgroundService
 from ..service.inpaint_service import InpaintService
 from ..service.generate_service import GenerateService
 from ..service.smoothing_service import SmoothingService
-from ..utils.image_utils import validate_image
+from ..utils.image_utils import ImageProcessor, validate_image
 
 router = APIRouter()
 
@@ -168,22 +168,30 @@ async def analyze_advertisement(
     marketing_type: str = Form("배경 제작"),
     reference_image: Optional[UploadFile] = File(None)
 ):
-    """GPT를 통한 광고 분석 및 프롬프트 생성"""
     try:
         from ..service.gpt_service import GPTService
         service = GPTService()
-        
-        product_img = await validate_image(product_image)
-        ref_img = await validate_image(reference_image) if reference_image else None
-        
-        result = await service.analyze_and_generate_prompt(
-            product_image=product_img,
-            reference_image=ref_img,
+
+        # 1. 이미지 로드
+        product_pil = await validate_image(product_image)
+        print("[DEBUG] product_pil:", product_pil)  # 또는 logger.info
+        ref_pil = await validate_image(reference_image) if reference_image else None
+
+        # 2. base64로 인코딩
+        processor = ImageProcessor()
+        product_b64 = processor.encode_to_base64(product_pil)
+        print("[DEBUG] product_b64:", product_b64[:100])
+        ref_b64 = processor.encode_to_base64(ref_pil) if ref_pil else None
+
+        # 3. GPT 서비스 호출
+        result = await service.analyze_ad_plan(
+            product_b64=product_b64,
+            ref_b64=ref_b64,
             product_type=product_type,
             marketing_type=marketing_type
         )
-        
+
         return result
-        
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"광고 분석 중 오류 발생: {str(e)}")
